@@ -15,6 +15,7 @@ class AchievementService
 
     public function getAchievements()
     {
+
         return $this->achievementRepository->getAchievements();
     }
 
@@ -25,6 +26,8 @@ class AchievementService
 
     public function store($data)
     {
+       
+
         if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
             $data['cover'] = $this->imageManager->uploadSingleImage(
                 $data['cover'],

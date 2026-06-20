@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('excerpt');
             $table->text('content');
+            $table->string('category');
             $table->string('cover')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();

@@ -17,9 +17,11 @@ class BlogResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'excerpt' => $this->excerpt,
+            'category' => $this->category,
             'content' => $this->content,
             'cover' => mediaUrl($this->cover),
             'date' => $this->date?->toDateString(),
+
         ];
     }
 }

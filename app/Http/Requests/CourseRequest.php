@@ -28,7 +28,7 @@ class CourseRequest extends FormRequest
         if ($this->isMethod('PUT')) {
             $data['title'] = 'sometimes|string|min:3|max:255';
             $data['description'] = 'sometimes|string|min:3';
-            $data['cover'] = 'sometimes|image|max:1025';
+            $data['cover'] = 'sometimes|image|max:2025';
 
         }
 

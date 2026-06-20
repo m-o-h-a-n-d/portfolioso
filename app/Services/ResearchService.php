@@ -29,10 +29,6 @@ class ResearchService
             $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches', 'public');
         }
 
-        if (isset($data['pdf']) && $data['pdf'] instanceof UploadedFile) {
-            $data['pdf'] = $this->imageManager->uploadSingleImage($data['pdf'], 'researches/pdf', 'public');
-        }
-
         return $this->researchRepository->store($data);
     }
 
@@ -47,8 +43,13 @@ class ResearchService
             $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches', 'public', $research->cover);
         }
 
-        if (isset($data['pdf']) && $data['pdf'] instanceof UploadedFile) {
-            $data['pdf'] = $this->imageManager->uploadSingleImage($data['pdf'], 'researches/pdf', 'public', $research->pdf);
+        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
+            $data['cover'] = $this->imageManager->uploadSingleImage(
+                $data['cover'],
+                'researches',
+                'public',
+                $research->cover
+            );
         }
 
         return $this->researchRepository->update($research, $data);
@@ -59,6 +60,14 @@ class ResearchService
         $research = $this->researchRepository->getResearch($id);
         if (! $research) {
             return false;
+        }
+        // Delete Gallery Images
+
+        // Delete Cover Image
+        if (! empty($research->cover)) {
+            $this->imageManager->deleteImageFromLocal(
+                $research->cover
+            );
         }
 
         return $this->researchRepository->delete($research);

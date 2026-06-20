@@ -17,9 +17,11 @@ class BlogSeeder extends Seeder
                 'title' => $blog['title'],
                 'slug' => $blog['slug'] ?? Str::slug($blog['title']),
                 'excerpt' => $blog['excerpt'] ?? null,
+                'category' => 'news',
                 'content' => $blog['content'] ?? null,
                 'cover' => $blog['cover'] ?? null,
                 'date' => $blog['date'] ?? null,
+
             ]);
         }
     }

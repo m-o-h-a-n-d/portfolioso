@@ -12,11 +12,11 @@ class Blog extends Model
 
     protected $fillable = [
         'title',
-        'slug',
         'excerpt',
         'content',
         'cover',
         'date',
+        'category',
     ];
 
     protected $casts = [

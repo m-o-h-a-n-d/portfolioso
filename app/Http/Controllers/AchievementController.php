@@ -24,6 +24,7 @@ class AchievementController extends Controller
 
     public function store(AchievementRequest $request)
     {
+
         $data = $request->validated();
 
         $achievement = $this->achievementService->store($data);

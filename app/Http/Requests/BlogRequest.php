@@ -21,7 +21,8 @@ class BlogRequest extends FormRequest
             'title' => 'required|string|min:3|max:255',
             'excerpt' => 'required|string|max:500',
             'content' => 'required|string|min:3',
-            'cover' => 'required|image|max:1025',
+            'cover' => 'required|image|max:2025',
+            'category'=>'required|string|max:255',
             'date' => 'nullable|date',
         ];
 
