@@ -41,6 +41,11 @@ class ContactUsService
         return $contactUs->fresh();
     }
 
+    public function markAllRead()
+    {
+        return $this->contactUsRepository->markAllRead();
+    }
+
     public function delete($id)
     {
         $contactUs = $this->contactUsRepository->getContactUs($id);

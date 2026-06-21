@@ -25,7 +25,43 @@ class ContactUsNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'broadcast'];
+    }
+
+    /**
+     * Get the broadcast representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): array
+    {
+        return [
+            'message' => 'New contact message received!',
+            'data' => [
+                'id' => $this->contactUs->id,
+                'name' => $this->contactUs->name,
+                'email' => $this->contactUs->email,
+                'subject' => $this->contactUs->subject,
+                'message' => $this->contactUs->message,
+            ],
+            'timestamp' => now()->toIso8601String(),
+        ];
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     */
+    public function broadcastOn(): array
+    {
+        return [
+            new \Illuminate\Broadcasting\Channel('contact-notifications'),
+        ];
+    }
+
+    /**
+     * The event's broadcast name.
+     */
+    public function broadcastAs(): string
+    {
+        return 'message';
     }
 
     /**

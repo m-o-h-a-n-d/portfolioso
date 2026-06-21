@@ -146,6 +146,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     // Contact Us
     Route::controller(ContactUsController::class)->prefix('contact-us')->group(function () {
         Route::get('/', 'index');
+        Route::patch('/read-all', 'markAllRead');
         Route::patch('/read/{id}', 'markRead');
         Route::delete('/delete/{id}', 'destroy');
     });

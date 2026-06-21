@@ -47,6 +47,7 @@ class UserRequest extends FormRequest
             $data['name'] = 'sometimes|string|min:3|max:255';
             $data['title'] = 'sometimes|string|min:3|max:255';
             $data['avatar'] = 'sometimes|image|mimes:jpg,jpeg,png,webp,svg,gif|max:2048';
+            $data['avatar'] = 'sometimes|file|max:2048';
             $data['email'] = [
                 'sometimes',
                 'email',

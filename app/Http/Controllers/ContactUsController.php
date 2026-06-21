@@ -37,7 +37,11 @@ class ContactUsController extends Controller
 
         $recipients = User::query()->get();
         if ($recipients->isNotEmpty()) {
-            Notification::send($recipients, new ContactUsNotification($contactUs));
+            try {
+                Notification::send($recipients, new ContactUsNotification($contactUs));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::error("Failed to send contact notification: " . $e->getMessage());
+            }
         }
 
         return apiResponce(200, 'Success', ContactUsResource::make($contactUs));
@@ -52,6 +56,12 @@ class ContactUsController extends Controller
         }
 
         return apiResponce(200, 'Success', ContactUsResource::make($contactUs));
+    }
+
+    public function markAllRead()
+    {
+        $this->contactUsService->markAllRead();
+        return apiResponce(200, 'Success');
     }
 
     public function destroy($id)

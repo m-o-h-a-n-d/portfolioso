@@ -26,6 +26,11 @@ class ContactUsRepository
         return $contactUs->update(['read' => true]);
     }
 
+    public function markAllRead()
+    {
+        return ContactUs::where('read', false)->update(['read' => true]);
+    }
+
     public function delete($contactUs)
     {
         return $contactUs->delete();

@@ -1,208 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="x-apple-disable-message-reformatting">
-        <title>{{ $companyName ?? config('app.name') }} - OTP Code</title>
+<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 
-        <style>
-            body, table, td, a { -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; }
-            table { border-collapse:collapse !important; }
-            img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; display:block; }
-            .wrapper { width:100%; background:#0b0f17; }
-            .container { width:100%; max-width:600px; }
-            .card { border-radius:18px; overflow:hidden; border:1px solid #232a36; background:#141923; }
-            .header { background:#1b202b; border-bottom:1px solid #242b38; }
-            .footer { background:#0f141f; border-top:1px solid #1e2431; }
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ $companyName ?? config('app.name') }} - OTP Code</title>
 
-            .p-outer { padding:28px 16px; }
-            .p-head { padding:22px 26px; }
-            .p-body { padding:26px; }
-            .p-foot { padding:18px 26px; }
+    <!--[if mso]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
 
-            .brand { font-size:18px; font-weight:700; color:#f3f5f8; letter-spacing:.2px; margin:0; }
-            .badge { font-size:12px; color:#aeb6c5; letter-spacing:.6px; text-transform:uppercase; margin:2px 0 0 0; }
-            .muted { font-size:12px; color:#7f8aa0; line-height:1.6; }
+    <style>
+        /* Base resets */
+        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+        img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; }
+        table { border-collapse: collapse !important; }
+        body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #F5F7FA; }
 
-            .title { font-size:22px; font-weight:700; color:#f6c343; margin:0 0 8px 0; }
-            .sub { font-size:14px; color:#c9d2e3; line-height:1.7; margin:0 0 18px 0; }
+        /* Typography */
+        body, table, td, p, a, li { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
 
-            .box { width:100%; background:#111722; border:1px solid #262d3b; border-radius:14px; overflow:hidden; }
-            .boxcell { padding:16px 18px; }
-            .divider { border-bottom:1px solid #1f2633; }
+        /* Custom Styles */
+        .wrapper { width: 100%; table-layout: fixed; background-color: #F5F7FA; padding-bottom: 40px; }
+        .webkit { max-width: 600px; background-color: #ffffff; margin: 0 auto; }
+        .outer { margin: 0 auto; width: 100%; max-width: 600px; border-spacing: 0; color: #0A1F44; }
 
-            .label { font-size:12px; color:#7f8aa0; text-transform:uppercase; letter-spacing:.6px; }
-            .note { font-size:13px; color:#b6c0d2; line-height:1.7; margin-top:8px; }
-            .warn { font-size:13px; color:#f0b4b4; line-height:1.7; margin-top:10px; }
+        /* Hero Banner (Doctor photo, full width, no text overlay) */
+        .hero-banner { background-color: #0A1F44; line-height: 0; font-size: 0; }
 
-            .otp-wrap { padding:18px; text-align:center; }
-            .otp {
-                display:inline-block;
-                font-size:28px;
-                font-weight:800;
-                letter-spacing:8px;
-                color:#0b0f17;
-                background:#f6c343;
-                padding:12px 16px;
-                border-radius:14px;
-                border:1px solid rgba(255,255,255,.08);
-                font-family: Arial, Helvetica, sans-serif;
-            }
-            .otp-hint { font-size:12px; color:#7f8aa0; margin-top:10px; }
+        /* Title Bar */
+        .title-bar { background-color: #143A75; color: #ffffff; padding: 12px 40px; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; }
 
-            .btn {
-                display:inline-block;
-                background:#f6c343;
-                color:#0b0f17 !important;
-                text-decoration:none;
-                padding:12px 16px;
-                border-radius:12px;
-                font-weight:800;
-                font-size:13px;
-            }
-            .btn-secondary {
-                display:inline-block;
-                background:#111722;
-                color:#9cc6ff !important;
-                text-decoration:none;
-                padding:12px 16px;
-                border-radius:12px;
-                border:1px solid #262d3b;
-                font-weight:700;
-                font-size:13px;
-            }
+        /* Content Section */
+        .content-padding { padding: 40px; background-color: #ffffff; }
+        .salutation { font-size: 20px; color: #0A1F44; margin-bottom: 8px; }
+        .intro-text { font-size: 16px; color: #4A5568; line-height: 1.6; margin-bottom: 30px; }
 
-            @media screen and (max-width: 600px) {
-                .p-outer { padding:18px 12px !important; }
-                .p-head, .p-body, .p-foot { padding:18px 16px !important; }
-                .title { font-size:20px !important; }
-                .brand { font-size:17px !important; }
-                .otp { font-size:26px !important; letter-spacing:6px !important; }
-                .stack { display:block !important; width:100% !important; }
-                .text-right { text-align:left !important; padding-top:10px !important; }
-                .btn, .btn-secondary { display:block !important; text-align:center !important; width:100% !important; box-sizing:border-box !important; }
-            }
-        </style>
-    </head>
+        /* Card Style */
+        .info-card { background-color: #ffffff; border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(10, 31, 68, 0.05); }
+        .card-header { background-color: #F8FAFC; border-bottom: 1px solid #E2E8F0; padding: 15px 20px; font-weight: 700; color: #0A1F44; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .card-body { padding: 28px 20px; }
+        .label { font-size: 12px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; text-align: center; }
 
-    <body style="margin:0;padding:0;background:#0b0f17;color:#e9eef6;font-family:Arial, Helvetica, sans-serif;">
-        <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
-            Your OTP code is {{ $otp }}. Expires in {{ $minutes ?? 10 }} minutes.
-        </div>
+        /* OTP Display */
+        .otp-code { display: inline-block; font-size: 32px; font-weight: 800; letter-spacing: 10px; color: #0A1F44; background-color: #FFF3E8; padding: 16px 24px; border-radius: 10px; border: 1px solid #F8D9B8; font-family: Arial, Helvetica, sans-serif; }
+        .otp-hint { font-size: 13px; color: #94A3B8; margin-top: 14px; text-align: center; }
 
-        <table role="presentation" cellpadding="0" cellspacing="0" width="100%" class="wrapper">
+        .note-box { background-color: #F1F5F9; border-radius: 8px; padding: 18px 20px; margin-top: 24px; border-left: 4px solid #F58220; }
+        .warn-box { background-color: #FEF2F2; border-radius: 8px; padding: 16px 20px; margin-top: 14px; border-left: 4px solid #E53E3E; }
+
+        /* Button (Vodafone Style) */
+        .button-td { border-radius: 4px; background: #F58220; transition: all 0.3s ease; }
+        .button-a { border: 1px solid #F58220; border-radius: 4px; color: #ffffff !important; display: inline-block; font-size: 16px; font-weight: 700; line-height: 1; padding: 18px 40px; text-align: center; text-decoration: none; }
+        .button-td:hover { background: #E06D00 !important; }
+
+        /* Footer */
+        .footer-table { background-color: #F5F7FA; color: #64748B; font-size: 13px; line-height: 1.6; }
+        .footer-padding { padding: 28px 40px; }
+
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .hero-padding { padding: 35px 20px !important; }
+            .title-bar { padding: 10px 20px !important; }
+            .content-padding { padding: 30px 20px !important; }
+            .footer-padding { padding: 22px 20px !important; }
+            .button-a { width: 100% !important; box-sizing: border-box !important; }
+            .otp-code { font-size: 26px !important; letter-spacing: 6px !important; padding: 14px 18px !important; }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;">
+        Your OTP code is {{ $otp }}. Expires in {{ $minutes ?? 10 }} minutes.
+    </div>
+
+    <div role="article" aria-roledescription="email" lang="en" style="background-color: #F5F7FA;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" class="wrapper">
             <tr>
-                <td align="center" class="p-outer">
-                    <table role="presentation" cellpadding="0" cellspacing="0" width="600" class="container card">
+                <td align="center">
+                    <div class="webkit">
+                        <!--[if (gte mso 9)|(IE)]>
+                        <table width="600" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
                         <tr>
-                            <td class="p-head header">
-                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td class="stack" style="vertical-align:middle;">
-                                            <table role="presentation" cellpadding="0" cellspacing="0">
-                                                <tr>
-                                                    <td style="padding-right:12px;vertical-align:middle;">
-                                                        @php
-                                                            $brandName = $companyName ?? config('app.name');
-                                                            $logo = $faviconUrl ?? null;
-                                                        @endphp
+                        <td>
+                        <![endif]-->
+                        <table class="outer" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
 
-                                                        @if (!empty($logo))
-                                                            <img src="{{ $logo }}" width="42" height="42" alt="{{ $brandName }} logo"
-                                                                 style="border-radius:10px;border:1px solid #2b3341;background:#0f1420;">
-                                                        @else
-                                                            <div style="width:42px;height:42px;border-radius:10px;border:1px solid #2b3341;background:#0f1420;
-                                                                color:#f3f5f8;line-height:42px;text-align:center;font-size:12px;font-weight:800;">
-                                                                {{ strtoupper(substr($brandName, 0, 2)) }}
-                                                            </div>
-                                                        @endif
-                                                    </td>
-                                                    <td style="vertical-align:middle;">
-                                                        <p class="brand">{{ $brandName }}</p>
-                                                        <p class="badge">OTP Verification</p>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </td>
+                            <!-- Hero Banner Section -->
+                            <tr>
+                                <td class="hero-banner">
+                                    <img src="{{ $doctorImageUrl ?? asset('images/doctor-mohamed-sobhy.png') }}" width="600" alt="{{ $doctorName ?? 'Dr. Mohamed Sobhy' }}" style="width: 100%; max-width: 600px; display: block;">
+                                </td>
+                            </tr>
 
-                                        <td class="stack text-right" align="right" style="vertical-align:middle;">
-                                            <div class="muted">{{ now()->format('M d, Y H:i') }}</div>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                            <!-- Title Bar -->
+                            <tr>
+                                <td class="title-bar">
+                                    One-Time Verification Code
+                                </td>
+                            </tr>
 
-                        <tr>
-                            <td class="p-body">
-                                <p class="title">Your Verification Code</p>
-                                <p class="sub">
-                                    Use this OTP to complete your action. This code will expire in
-                                    <strong style="color:#f3f5f8;">{{ $minutes ?? 10 }} minutes</strong>.
-                                </p>
+                            <!-- Main Content Section -->
+                            <tr>
+                                <td class="content-padding">
+                                    <p class="salutation">Hello,</p>
+                                    <p class="intro-text">We need to verify your email address. Please enter the following code to complete the verification process.</p>
 
-                                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" class="box">
-                                    <tr>
-                                        <td class="otp-wrap divider">
-                                            <div class="label">One-Time Password (OTP)</div>
-                                            <div style="padding-top:12px;">
-                                                <span class="otp">{{ $otp }}</span>
-                                            </div>
-                                            <div class="otp-hint">
-                                                Do not share this code with anyone.
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="boxcell">
-                                            <div class="label">Security Note</div>
-                                            <div class="note">
-                                                If you didn’t request this code, you can safely ignore this email.
-                                                Someone may have entered your email by mistake.
-                                            </div>
-
-                                            <div class="warn">
-                                                Never share your OTP or password with anyone (even support).
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </table>
-
-                                @if (!empty($actionUrl))
-                                    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:16px;">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" class="info-card">
+                                        <tr class="card-header">
+                                            <td style="padding: 15px 20px;">One-Time Password (OTP)</td>
+                                        </tr>
                                         <tr>
-                                            <td>
-                                                <a class="btn" href="{{ $actionUrl }}">Continue</a>
+                                            <td class="card-body" align="center">
+                                                <div class="label">Your Verification Code</div>
+                                                <span class="otp-code">{{ $otp }}</span>
+                                                <p class="otp-hint">Do not share this code with anyone.</p>
                                             </td>
                                         </tr>
                                     </table>
-                                @endif
 
-                                <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top:14px;">
-                                    <tr>
-                                        <td class="muted">
-                                            This message was sent to: <span style="color:#c9d2e3;">{{ $email ?? 'your email' }}</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                        </tr>
+                                    <div class="note-box">
+                                        <p style="margin:0; font-size:14px; color:#334155; line-height:1.6;">
+                                            Please note this code will expire after <strong>{{ $minutes ?? 10 }} minutes</strong>.
+                                        </p>
+                                    </div>
 
-                        <tr>
-                            <td class="p-foot footer">
-                                <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td class="muted">Sent from {{ $brandName }}</td>
-                                        <td align="right" class="muted">{{ config('app.url') }}</td>
-                                    </tr>
-                                </table>
-                            </td>
+                                    <div class="warn-box">
+                                        <p style="margin:0; font-size:13px; color:#9B2C2C; line-height:1.6;">
+                                            Never share your OTP or password with anyone, even support staff. If you didn't request this code, you can safely ignore this email.
+                                        </p>
+                                    </div>
+
+                                    @if (!empty($actionUrl))
+                                        <!-- CTA Button -->
+                                        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-top: 40px;">
+                                            <tr>
+                                                <td align="left">
+                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" class="button-td">
+                                                        <tr>
+                                                            <td>
+                                                                <a href="{{ $actionUrl }}" class="button-a">Continue</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    @endif
+
+                                    <p style="margin-top: 30px; font-size: 14px; color: #718096;">
+                                        This message was sent to: <strong>{{ $email ?? 'your email' }}</strong><br>
+                                        Kind regards,<br>
+                                        <strong>{{ $companyName ?? config('app.name') }} Team</strong>
+                                    </p>
+                                </td>
+                            </tr>
+
+                            <!-- Footer Section -->
+                            <tr>
+                                <td class="footer-padding">
+                                    <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" class="footer-table">
+                                        <tr>
+                                            <td align="center">
+                                                <p style="margin: 0 0 6px 0; font-weight: 700; color: #0A1F44; font-size: 14px;">{{ $companyName ?? config('app.name') }}</p>
+                                                <p style="margin: 0 0 14px 0;">
+                                                    <a href="{{ config('app.url') }}" style="color: #143A75; text-decoration: none; font-weight: 600; font-size: 13px;">{{ config('app.url') }}</a>
+                                                </p>
+                                                <p style="margin: 0; font-size: 12px; color: #A0AEC0;">
+                                                    &copy; {{ date('Y') }} {{ $companyName ?? config('app.name') }}. All rights reserved.
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td>
                         </tr>
-                    </table>
+                        </table>
+                        <![endif]-->
+                    </div>
                 </td>
             </tr>
         </table>
-    </body>
+    </div>
+</body>
+
 </html>
