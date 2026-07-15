@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.5",
+        "php": "^8.4",
         "cviebrock/eloquent-sluggable": "^13.0",
         "laravel/framework": "^13.8",
         "laravel/reverb": "^1.10",
@@ -31,7 +31,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/" 
+            "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
             "app/Http/Helpers/ApiResponce.php"
