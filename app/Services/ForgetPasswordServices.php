@@ -18,7 +18,7 @@ class ForgetPasswordServices
         }
 
         $otp = $user->createOneTimePassword();
-        $user->notify(new SendOtpNotify($otp->password));
+        $user->notify(new SendOtpNotify($otp));
 
         return true;
     }
@@ -30,9 +30,9 @@ class ForgetPasswordServices
             return ['ok' => false, 'message' => 'User not found'];
         }
 
-        $result = $user->consumeOneTimePassword($data['otp']);
-        if (! $result->isOk()) {
-            return ['ok' => false, 'message' => $result->validationMessage()];
+        $result = $user->consumeOneTimePassword((string) $data['otp']);
+        if (! $result['ok']) {
+            return ['ok' => false, 'message' => $result['message']];
         }
 
         $plainToken = Str::random(64);

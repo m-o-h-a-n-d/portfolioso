@@ -15,8 +15,7 @@
         "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
-        "resend/resend-laravel": "^1.4",
-        "spatie/laravel-one-time-passwords": "^1.1"
+        "resend/resend-laravel": "^1.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -86,6 +85,9 @@
     },
     "config": {
         "optimize-autoloader": true,
+        "platform": {
+            "php": "8.3.29"
+        },
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
