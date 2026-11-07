@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Aws\S3\PostObjectV4;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -29,24 +30,44 @@ class StorageUploadService
         $diskName = config('filesystems.default', 's3');
 
         // Check if S3 disk is active or configured with credentials
-        $hasS3Config = !empty(config('filesystems.disks.s3.key')) && !empty(config('filesystems.disks.s3.bucket'));
+        $hasS3Config = ! empty(config('filesystems.disks.s3.key')) && ! empty(config('filesystems.disks.s3.bucket'));
 
         if ($diskName === 's3' || $hasS3Config) {
+            /** @var \Illuminate\Filesystem\AwsS3V3Adapter $disk */
             $disk = Storage::disk('s3');
-            
-            $options = [];
-            if (!empty($fileType)) {
-                $options['ContentType'] = $fileType;
-            }
+            $client = $disk->getClient();
+            $bucket = config('filesystems.disks.s3.bucket');
 
-            $uploadData = $disk->temporaryUploadUrl($path, $expiration, $options);
+            $formInputs = [
+                'key' => $path,
+                'Content-Type' => $fileType,
+            ];
 
-            $uploadUrl = $uploadData['url'];
-            $headers = $uploadData['headers'] ?? [];
-            if (!empty($fileType)) {
-                $headers['Content-Type'] = $fileType;
-            }
+            $options = [
+                ['key' => $path],
+                ['Content-Type' => $fileType],
+            ];
 
+            $postObject = new PostObjectV4(
+                $client,
+                $bucket,
+                $formInputs,
+                $options,
+                $expiration
+            );
+
+            $formAttributes = $postObject->getFormAttributes();
+            $fields = $postObject->getFormInputs();
+
+            // Also provide presigned PUT URL for non-browser CLI/API clients
+            $putData = $disk->temporaryUploadUrl($path, $expiration, [
+                'ContentType' => $fileType,
+            ]);
+
+            $uploadUrl = $formAttributes['action'];
+            $method = 'POST';
+            $headers = [];
+            $putUrl = $putData['url'];
             $fileUrl = $disk->temporaryUrl($path, now()->addHours(24));
         } else {
             // Local fallback signed route for offline dev when S3 is not configured
@@ -55,6 +76,9 @@ class StorageUploadService
                 $expiration,
                 ['path' => $path]
             );
+            $method = 'PUT';
+            $fields = null;
+            $putUrl = $uploadUrl;
             $headers = [
                 'Content-Type' => $fileType,
             ];
@@ -63,7 +87,9 @@ class StorageUploadService
 
         return [
             'upload_url' => $uploadUrl,
-            'method' => 'PUT',
+            'put_url' => $putUrl,
+            'method' => $method,
+            'fields' => $fields,
             'file_path' => $path,
             'file_url' => $fileUrl,
             'headers' => $headers,
@@ -73,4 +99,3 @@ class StorageUploadService
         ];
     }
 }
-
