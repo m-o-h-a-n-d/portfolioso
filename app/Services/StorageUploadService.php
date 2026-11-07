@@ -47,7 +47,7 @@ class StorageUploadService
                 $headers['Content-Type'] = $fileType;
             }
 
-            $fileUrl = $disk->url($path);
+            $fileUrl = $disk->temporaryUrl($path, now()->addHours(24));
         } else {
             // Local fallback signed route for offline dev when S3 is not configured
             $uploadUrl = URL::temporarySignedRoute(
