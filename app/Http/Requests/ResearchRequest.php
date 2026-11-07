@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\FileOrPath;
+use App\Rules\ImageOrPath;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,8 +31,8 @@ class ResearchRequest extends FormRequest
             'conference' => 'nullable|string|max:255',
             'doi' => 'nullable|string|max:255',
             'link' => 'nullable|string|max:255',
-            'pdf' => 'nullable',
-            'cover' => 'required|image|max:2026',
+            'pdf' => ['nullable', new FileOrPath(10240)],
+            'cover' => ['required', new ImageOrPath(2048)],
         ];
 
         if ($this->isMethod('PUT')) {
@@ -38,7 +40,8 @@ class ResearchRequest extends FormRequest
             $data['year'] = 'sometimes|integer|min:1900|max:2100';
             $data['abstract'] = 'sometimes|string|min:3';
             $data['authors'] = 'sometimes|array';
-            $data['cover'] = 'sometimes|image|max:2026';
+            $data['pdf'] = ['sometimes', 'nullable', new FileOrPath(10240)];
+            $data['cover'] = ['sometimes', new ImageOrPath(2048)];
         }
 
         return $data;

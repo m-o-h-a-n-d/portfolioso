@@ -26,7 +26,7 @@ class ResearchService
     public function store($data)
     {
         if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches', 'public');
+            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches');
         }
 
         return $this->researchRepository->store($data);
@@ -39,17 +39,12 @@ class ResearchService
             return false;
         }
 
-        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches', 'public', $research->cover);
-        }
-
-        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage(
-                $data['cover'],
-                'researches',
-                'public',
-                $research->cover
-            );
+        if (isset($data['cover'])) {
+            if ($data['cover'] instanceof UploadedFile) {
+                $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'researches', null, $research->cover);
+            } elseif (is_string($data['cover']) && $data['cover'] !== $research->cover && $research->cover) {
+                $this->imageManager->deleteImageFromLocal($research->cover);
+            }
         }
 
         return $this->researchRepository->update($research, $data);

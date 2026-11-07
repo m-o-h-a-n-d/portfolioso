@@ -19,7 +19,7 @@ if (! function_exists('apiResponce')) {
 if (! function_exists('mediaUrl')) {
     /**
      * Resolve a stored media value to a usable URL.
-     * Absolute URLs are returned untouched; relative paths are served from storage.
+     * Absolute URLs are returned untouched; relative paths are resolved via default storage disk or asset URL.
      */
     function mediaUrl($path)
     {
@@ -29,6 +29,11 @@ if (! function_exists('mediaUrl')) {
 
         if (is_string($path) && str_starts_with($path, 'http')) {
             return $path;
+        }
+
+        $disk = config('filesystems.default', 'public');
+        if ($disk === 's3') {
+            return \Illuminate\Support\Facades\Storage::disk('s3')->url($path);
         }
 
         return secure_asset($path);

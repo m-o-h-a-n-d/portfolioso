@@ -26,7 +26,7 @@ class BlogService
     public function store($data)
     {
         if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'blogs', 'public');
+            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'blogs');
         }
 
         return $this->blogRepository->store($data);
@@ -39,8 +39,12 @@ class BlogService
             return false;
         }
 
-        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'blogs', 'public', $blog->cover);
+        if (isset($data['cover'])) {
+            if ($data['cover'] instanceof UploadedFile) {
+                $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'blogs', null, $blog->cover);
+            } elseif (is_string($data['cover']) && $data['cover'] !== $blog->cover && $blog->cover) {
+                $this->imageManager->deleteImageFromLocal($blog->cover);
+            }
         }
 
         return $this->blogRepository->update($blog, $data);

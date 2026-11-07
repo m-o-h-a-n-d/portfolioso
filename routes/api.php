@@ -15,6 +15,7 @@ use App\Http\Controllers\LectureController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\StorageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,9 @@ Route::post('/auth/reset-password', [ResetPasswordController::class, 'reset']);
 
 // Contact
 Route::post('/contact-us/store', [ContactUsController::class, 'store']);
+
+// Fallback signed upload route for local development
+Route::put('/storage/local-upload', [StorageController::class, 'localDirectUpload'])->name('storage.local-upload');
 
 // Public content
 Route::get('/user/data', [UserController::class, 'getUserData']);
@@ -58,6 +62,8 @@ Route::get('/education', [EducationController::class, 'index']);
 */
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+
+    Route::post('/storage/upload-url', [StorageController::class, 'requestUploadUrl']);
 
     Route::get('/user', [UserController::class, 'index']);
     Route::put('/user/update', [UserController::class, 'update']);

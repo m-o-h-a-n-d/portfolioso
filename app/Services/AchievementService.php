@@ -52,13 +52,17 @@ class AchievementService
         }
 
         // Update Cover
-        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage(
-                $data['cover'],
-                'achievements',
-                'public',
-                $achievement->cover
-            );
+        if (isset($data['cover'])) {
+            if ($data['cover'] instanceof UploadedFile) {
+                $data['cover'] = $this->imageManager->uploadSingleImage(
+                    $data['cover'],
+                    'achievements',
+                    null,
+                    $achievement->cover
+                );
+            } elseif (is_string($data['cover']) && $data['cover'] !== $achievement->cover && $achievement->cover) {
+                $this->imageManager->deleteImageFromLocal($achievement->cover);
+            }
         }
 
         // Update Gallery

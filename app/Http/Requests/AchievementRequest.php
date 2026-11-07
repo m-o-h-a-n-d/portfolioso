@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ImageOrPath;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -22,7 +23,7 @@ class AchievementRequest extends FormRequest
             'title' => 'required|string|min:3|max:255',
             'description' => 'required|string|max:500',
             'full_description' => 'required|string|min:3',
-            'cover' => 'required|image|max:3500',
+            'cover' => ['required', new ImageOrPath(3500)],
             'date' => 'nullable|date',
             'category' => 'nullable|string|max:100',
             'live_link' => 'nullable|string|max:255',
@@ -34,7 +35,7 @@ class AchievementRequest extends FormRequest
             $data['title'] = 'sometimes|string|min:3|max:255';
             $data['description'] = 'sometimes|string|max:500';
             $data['full_description'] = 'sometimes|string|min:3';
-            $data['cover'] = 'sometimes|image|max:3500';
+            $data['cover'] = ['sometimes', new ImageOrPath(3500)];
         }
 
         return $data;

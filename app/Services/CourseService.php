@@ -26,7 +26,7 @@ class CourseService
     public function store($data)
     {
         if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'courses', 'public');
+            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'courses');
         }
 
         $course = $this->courseRepository->store($data);
@@ -45,8 +45,12 @@ class CourseService
             return false;
         }
 
-        if (isset($data['cover']) && $data['cover'] instanceof UploadedFile) {
-            $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'courses', 'public', $course->cover);
+        if (isset($data['cover'])) {
+            if ($data['cover'] instanceof UploadedFile) {
+                $data['cover'] = $this->imageManager->uploadSingleImage($data['cover'], 'courses', null, $course->cover);
+            } elseif (is_string($data['cover']) && $data['cover'] !== $course->cover && $course->cover) {
+                $this->imageManager->deleteImageFromLocal($course->cover);
+            }
         }
 
         return $this->courseRepository->update($course, $data);

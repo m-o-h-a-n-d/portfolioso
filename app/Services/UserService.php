@@ -55,29 +55,37 @@ class UserService
             return false;
         }
 
-        if (isset($data['avatar']) && $data['avatar'] instanceof UploadedFile) {
-            $data['avatar'] = $this->imageManager->uploadSingleImage(
-                $data['avatar'],
-                'users',
-                'public',
-                $user->avatar
-            );
+        if (isset($data['avatar'])) {
+            if ($data['avatar'] instanceof UploadedFile) {
+                $data['avatar'] = $this->imageManager->uploadSingleImage(
+                    $data['avatar'],
+                    'users',
+                    null,
+                    $user->avatar
+                );
 
-            if (! $data['avatar']) {
-                return false;
+                if (! $data['avatar']) {
+                    return false;
+                }
+            } elseif (is_string($data['avatar']) && $data['avatar'] !== $user->avatar && $user->avatar) {
+                $this->imageManager->deleteImageFromLocal($user->avatar);
             }
         }
 
-        if (isset($data['cv']) && $data['cv'] instanceof UploadedFile) {
-            $data['cv'] = $this->imageManager->uploadCv(
-                $data['cv'],
-                'cvs',
-                'public',
-                $user->cv
-            );
+        if (isset($data['cv'])) {
+            if ($data['cv'] instanceof UploadedFile) {
+                $data['cv'] = $this->imageManager->uploadCv(
+                    $data['cv'],
+                    'cvs',
+                    config('filesystems.default', 'public'),
+                    $user->cv
+                );
 
-            if (! $data['cv']) {
-                return false;
+                if (! $data['cv']) {
+                    return false;
+                }
+            } elseif (is_string($data['cv']) && $data['cv'] !== $user->cv && $user->cv) {
+                $this->imageManager->deleteImageFromLocal($user->cv);
             }
         }
 
