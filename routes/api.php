@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
     Route::get('/user', [UserController::class, 'index']);
     Route::put('/user/update', [UserController::class, 'update']);
+    Route::put('/user/password', [UserController::class, 'updatePassword']);
     Route::delete('/auth/logout', [LoginController::class, 'logout']);
 
     // Achievements
@@ -148,6 +149,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::get('/', 'index');
         Route::put('/update', 'update');
     });
+    Route::put('/setting/password', [UserController::class, 'updatePassword']);
 
     // Contact Us
     Route::controller(ContactUsController::class)->prefix('contact-us')->group(function () {

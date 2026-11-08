@@ -93,10 +93,25 @@ class UserService
             unset($data['password']);
         }
 
+        unset($data['current_password'], $data['password_confirmation']);
+
         if (! $this->userRepository->update($user, $data)) {
             return false;
         }
 
         return $user->fresh();
+    }
+
+    public function updatePassword(array $data): bool
+    {
+        $user = $this->getUserAuth();
+
+        if (! $user || ! Hash::check($data['current_password'], $user->password)) {
+            return false;
+        }
+
+        return (bool) $this->userRepository->update($user, [
+            'password' => $data['password'],
+        ]);
     }
 }

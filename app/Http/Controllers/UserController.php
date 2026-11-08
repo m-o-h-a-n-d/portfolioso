@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UpdatePasswordRequest;
 use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Services\UserService;
@@ -43,5 +44,16 @@ class UserController extends Controller
         }
 
         return apiResponce(200, 'Success', new UserResource($user));
+    }
+
+    public function updatePassword(UpdatePasswordRequest $request)
+    {
+        $data = $request->validated();
+
+        if (! $this->userService->updatePassword($data)) {
+            return apiResponce(400, 'Bad Request');
+        }
+
+        return apiResponce(200, 'Password updated successfully');
     }
 }

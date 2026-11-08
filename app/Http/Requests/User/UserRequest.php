@@ -62,7 +62,8 @@ class UserRequest extends FormRequest
             ];
             $data['phone'] = 'sometimes|string|min:6|max:30';
             $data['social_links'] = 'sometimes|array';
-            $data['password'] = 'sometimes|string|min:8';
+            $data['current_password'] = ['sometimes', 'required_with:password', 'string', 'current_password'];
+            $data['password'] = ['sometimes', 'string', 'min:8', 'confirmed'];
         }
 
         return $data;
